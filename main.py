@@ -435,7 +435,7 @@ class App():
         CG.call_projecao(self.casa, self.canvas)
         print(self.casa.projecao)
 
-    
+
     def call_cabinet(self):
         if self.canvas:
             self.canvas.delete('all')
@@ -555,6 +555,98 @@ class App():
                 self.casa.rotacao_3D_global(self.canvas,'z', float(self.value_rotation_org.get()))
             except ValueError:
                 messagebox.showerror('Erro', 'O campo selecionado não pode ser vazio')
+
+    
+    
+
+
+    def call_escala(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        axis = self.axis_escala.get()
+
+        if axis == 1:
+            try:
+                self.casa.escala_3D('x', float(self.value_escala_x.get()), self.canvas)
+            except ValueError:
+                messagebox.showerror('Erro', 'O campo selecionado não pode ser vazio')
+
+        elif axis == 2:
+            try:
+                self.casa.escala_3D('y', float(self.value_escala_y.get()), self.canvas)
+            except ValueError:
+                messagebox.showerror('Erro', 'O campo selecionado não pode ser vazio')
+        elif axis == 3:
+            try:
+                self.casa.escala_3D('z', float(self.value_escala_z.get()), self.canvas)
+            except ValueError:
+                messagebox.showerror('Erro', 'O campo selecionado não pode ser vazio')
+
+
+    def call_escala_global(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        if not self.casa:
+            self.casa = CG()
+        fator = self.value_escala_global.get()
+        print(fator)
+        self.casa.escala_3D_global(self.canvas, fator)
+    
+
+    def call_shearing(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        if self.casa == None:
+            self.casa = CG()
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        print(self.value_shearing_y.get())
+        print(self.value_shearing_z.get())
+
+        if self.select_x_shearing.get() == True:
+            # shearing em x
+            shy = self.value_shearing_y.get()
+            shz = self.value_shearing_z.get()
+            if shy==shz!='':
+                self.casa.shearing_3D(self.canvas, shy=shy, shz=shz)
+            elif shy!='':
+                self.casa.shearing_3D(self.canvas, shy=shy)
+            elif shz!='':
+                self.casa.shearing_3D(self.canvas, shz=shz)
+
+        elif self.select_y_shearing.get() == True:
+            # shearing em y
+            shx = self.value_shearing_x.get()
+            shz = self.value_shearing_y.get()
+            if shz==shx!='':
+                self.casa.shearing_3D(self.canvas, shx=shx, shz=shz)
+            elif shx!='':
+                self.casa.shearing_3D(self.canvas, shx=shx)
+            elif shz!='':
+                self.casa.shearing_3D(self.canvas, shz=shz)
+            
+        elif self.select_z_shearing.get() == True:
+            # shearing em z
+            shy = self.value_shearing_y.get()
+            shx = self.value_shearing_y.get()
+            if shx != '' and shy != '':
+                self.casa.shearing_3D(self.canvas, shx=shx, shy=shy)
+            elif shx == '':
+                self.casa.shearing_3D(self.canvas, shy=shy)
+            elif shy == '':
+                self.casa.shearing_3D(self.canvas, shx=shx)
+
+        
+# ----------FIM MÉTODOS DE CHAMADA DOS MÉTODOS DA CLASSE CG-------------- #
+
+
 
 
 
