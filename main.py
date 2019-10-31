@@ -345,6 +345,97 @@ class App():
 # ----------FIM MÉTODOS DE DIALOG-------------- #
 
 
+# ----------INÍCIO MÉTODOS DE CHAMADA DOS MÉTODOS DA CLASSE CG-------------- #
+    def call_reset_house(self):
+        self.casa = CG()
+        ['Cavaleira', 'Cabinet', 'Ortogonal']
+        self.master_proj = tk.Toplevel(self.master)
+        self.master_proj.title('Selecione a Projeção')
+        self.master_proj.geometry('350x100+%d+%d'% 
+        (self.master.winfo_screenwidth()/2,self.master.winfo_screenheight()/2))
+        button_set_proj = Button(self.master_proj, text="OK", command=self.call_proj)
+        button_set_proj.grid(row=10, column=1, sticky=W)
+        self.combo_proj = ttk.Combobox(self.master_proj, 
+        values=['Cavaleira', 'Cabinet', 'Ortogonal'])
+        self.combo_proj.grid(row=0, column=0)
+        self.combo_proj.current(0)
+        
+        self.master_proj.mainloop()
+
+
+    def call_proj(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        if self.casa == None:
+            self.casa = CG()
+        if self.combo_proj.get() == 'Cavaleira':
+            self.call_cavaleira()
+        elif self.combo_proj.get() == 'Cabinet':
+            self.call_cabinet()
+        elif self.combo_proj.get() == 'Ortogonal':
+            self.dialog_projecao()
+
+
+    def call_draw_line(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        self.canvas.bind("<Button-1>", self.mouse_click_line)
+        self.canvas.bind("<ButtonRelease-1>", self.mouse_release_line)
+        
+
+    def call_draw_circ(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+
+        
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        self.canvas.bind("<Button-1>", self.mouse_click_circ)
+        self.canvas.bind("<ButtonRelease-1>", self.mouse_release_circ)
+        
+    
+    def call_cohen_sutherland(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        
+        a = CS(self.canvas)
+        self.canvas.bind("<Button-1>", a.mouse_click)
+        self.canvas.bind("<ButtonRelease-1>", a.mouse_release)
+
+
+    def call_draw_house(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        self.canvas.bind("<Button-1>", self.mouse_click_house)
+        self.canvas.bind("<ButtonRelease-1>", self.mouse_release_house)
+    
+
+    def call_cavaleira(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        
+        self.casa.projecao = 'cav'
+        print(self.casa)
+        CG.call_projecao(self.casa, self.canvas)
+        print(self.casa.projecao)
+
+
 
 def main():
     
