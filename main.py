@@ -435,6 +435,127 @@ class App():
         CG.call_projecao(self.casa, self.canvas)
         print(self.casa.projecao)
 
+    
+    def call_cabinet(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        
+        self.casa.projecao = ''
+        print(self.casa)
+        CG.call_projecao(self.casa, self.canvas)
+        print(self.casa.projecao)
+
+
+    def call_translacao(self, x=None,y=None, z=None, translacao=[]):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        if x==y==z!=None:
+            # passa x  y z
+            try:
+                self.casa.translacao_3D('x', int(translacao[0]), self.canvas, False)
+                self.casa.translacao_3D('y', int(translacao[1]), self.canvas, False)
+                self.casa.translacao_3D('z', int(translacao[2]), self.canvas, True)
+            except ValueError:
+                messagebox.showerror("Erro", "Campos selecionados não podem ser vazios!")
+            
+        elif x==y!=None:
+            # passa x e y
+            try:
+                self.casa.translacao_3D('x', int(translacao[0]), self.canvas, False)
+                self.casa.translacao_3D('y', int(translacao[1]), self.canvas, True)
+            except ValueError:
+                messagebox.showerror("Erro", "Campos selecionados não podem ser vazios!")
+            
+        elif x==z!=None:
+            # passa x e z
+            try:
+                self.casa.translacao_3D('x', int(translacao[0]), self.canvas, False)
+                self.casa.translacao_3D('z', int(translacao[1]), self.canvas, True)
+            except ValueError:
+                messagebox.showerror("Erro", "Campos selecionados não podem ser vazios!")
+        elif y==z!=None:
+            # passa y e z
+            try:
+                self.casa.translacao_3D('y', int(translacao[0]), self.canvas, False)
+                self.casa.translacao_3D('z', int(translacao[1]), self.canvas, True)
+            except:
+                messagebox.showerror("Erro", "Campos selecionados não podem ser vazios!")
+
+            
+        elif x!= None:
+            # passa x
+            try:
+                self.casa.translacao_3D('x', int(translacao[0]), self.canvas, True)
+            except:
+                messagebox.showerror("Erro", "Campos selecionados não podem ser vazios!")
+
+        elif y!= None:
+            # passa y
+            try:
+                self.casa.translacao_3D('y', int(translacao[0]), self.canvas, True)
+            except:
+                messagebox.showerror("Erro", "Campos selecionados não podem ser vazios!")
+
+        elif z!= None:  
+            # passa z
+            try:
+                self.casa.translacao_3D('z', int(translacao[0]), self.canvas, True)
+            except:
+                messagebox.showerror("Erro", "Campos selecionados não podem ser vazios!")
+
+
+    def call_ortogonal(self):
+        if self.canvas: 
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        if self.casa == None:
+            self.casa = CG()
+        if self.plano_proj.get() == 1:
+            self.casa.ortogonal(self.canvas, 'z', self.center_x, self.center_y)   
+        elif self.plano_proj.get() == 2:
+            self.casa.ortogonal(self.canvas, 'x', self.center_x, self.center_y)
+        elif self.plano_proj.get() == 3:
+                self.casa.ortogonal(self.canvas, 'y', self.center_x, self.center_y)
+    
+
+    def call_rotacao(self):
+        if self.canvas:
+            self.canvas.delete('all')
+            self.canvas = None
+        self.canvas = tk.Canvas(self.master, height=768, width=1366, background="#ffffff")
+        self.canvas.grid(row=0, column=0)
+        print('call_rotation')
+        axis = self.axis_rotation.get()
+        print(f'axis: {axis}')  
+        if axis == 1:
+            try:
+                self.casa.rotacao_3D(self.canvas, 'x', float(self.value_rotation_x.get()))
+            except ValueError:
+                messagebox.showerror('Erro', 'O campo selecionado não pode ser vazio')
+        elif axis == 2:
+            try:
+                self.casa.rotacao_3D(self.canvas, 'y', float(self.value_rotation_y.get()))
+            except ValueError:
+                messagebox.showerror('Erro', 'O campo selecionado não pode ser vazio')
+        elif axis == 3:
+            try:
+                self.casa.rotacao_3D(self.canvas, 'z', float(self.value_rotation_z.get()))
+            except ValueError:
+                messagebox.showerror('Erro', 'O campo selecionado não pode ser vazio')
+        elif axis == 4:
+            try:
+                self.casa.rotacao_3D_global(self.canvas,'z', float(self.value_rotation_org.get()))
+            except ValueError:
+                messagebox.showerror('Erro', 'O campo selecionado não pode ser vazio')
+
 
 
 def main():
